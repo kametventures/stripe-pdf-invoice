@@ -37,7 +37,11 @@ StripePdfInvoice.prototype.generate = function(invoiceId, data, callback) {
         if(!error && results && results.invoice)
         {
             var invoice = _.extend({}, config, data, results.invoice);
-            invoice.currency_symbol = invoice.currency_symbol || '$';
+
+            invoice.discount_coupon_id = invoice.discount.coupon.id || 'Coupon';
+            invoice.discount_coupon_amount_off = - (invoice.discount.coupon.amount_off / 100) || undefined;
+            invoice.discount_coupon_currency_symbol = invoice.currency_symbol;
+
             invoice.label_invoice = invoice.label_invoice || 'invoice';
             invoice.label_invoice_to = invoice.label_invoice_to || 'invoice to';
             invoice.label_invoice_by = invoice.label_invoice_by || 'invoice by';
@@ -48,6 +52,7 @@ StripePdfInvoice.prototype.generate = function(invoiceId, data, callback) {
             invoice.label_price = invoice.label_price || 'price (' + invoice.currency_symbol + ')';
             invoice.label_amount = invoice.label_amount || 'Amount';
             invoice.label_subtotal = invoice.label_subtotal || 'subtotal';
+            invoice.label_discount = invoice.label_discount || 'discount';
             invoice.label_total = invoice.label_total || 'total';
             invoice.label_vat = invoice.label_vat || 'vat';
             invoice.label_invoice_by = invoice.label_invoice_by || 'invoice by';
@@ -96,6 +101,7 @@ StripePdfInvoice.prototype.generate = function(invoiceId, data, callback) {
             });
             invoice.total = (invoice.total/100).toFixed(2);
             invoice.subtotal = (invoice.subtotal/100).toFixed(2);
+            invoice.discount = invoice.discount_coupon_amount_off.toFixed(2);
             invoice.tax_percent = invoice.tax_percent || 0;
 
 
