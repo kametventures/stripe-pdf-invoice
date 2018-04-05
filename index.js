@@ -38,10 +38,11 @@ StripePdfInvoice.prototype.generate = function(invoiceId, data, callback) {
         {
             var invoice = _.extend({}, config, data, results.invoice);
 
-            invoice.discount_coupon_id = invoice.discount.coupon.id || 'Coupon';
-            invoice.discount_coupon_amount_off = - (invoice.discount.coupon.amount_off / 100) || undefined;
-            invoice.discount_coupon_currency_symbol = invoice.currency_symbol;
-
+            if (invoice.discount && invoice.discount.coupon) {          
+                invoice.discount_coupon_id = invoice.discount.coupon.id || 'Coupon';
+                invoice.discount_coupon_amount_off = - (invoice.discount.coupon.amount_off / 100) || undefined;
+                invoice.discount_coupon_currency_symbol = invoice.currency_symbol;
+            }
             invoice.label_invoice = invoice.label_invoice || 'invoice';
             invoice.label_invoice_to = invoice.label_invoice_to || 'invoice to';
             invoice.label_invoice_by = invoice.label_invoice_by || 'invoice by';
