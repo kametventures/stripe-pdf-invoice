@@ -42,6 +42,10 @@ StripePdfInvoice.prototype.generate = function(invoiceId, data, callback) {
                 invoice.discount_coupon_id = invoice.discount.coupon.id || 'Coupon';
                 invoice.discount_coupon_amount_off = - (invoice.discount.coupon.amount_off / 100) || undefined;
                 invoice.discount_coupon_currency_symbol = invoice.currency_symbol;
+            } else {
+                invoice.discount_coupon_id = 'No Coupon';
+                invoice.discount_coupon_amount_off = 0;
+                invoice.discount_coupon_currency_symbol = invoice.currency_symbol;
             }
             invoice.label_invoice = invoice.label_invoice || 'invoice';
             invoice.label_invoice_to = invoice.label_invoice_to || 'invoice to';
